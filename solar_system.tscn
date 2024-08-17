@@ -1,9 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://i1kc0kubuujw"]
+[gd_scene load_steps=4 format=3 uid="uid://i1kc0kubuujw"]
 
+[ext_resource type="Script" path="res://solar_system.gd" id="1_0j8ob"]
 [ext_resource type="PackedScene" uid="uid://dwp352sd18676" path="res://sun.tscn" id="1_2v0qv"]
 [ext_resource type="PackedScene" uid="uid://sopr4q2hdxso" path="res://planet.tscn" id="2_a8n8s"]
 
 [node name="solar_system" type="Node3D"]
+script = ExtResource("1_0j8ob")
 
 [node name="sun" parent="." instance=ExtResource("1_2v0qv")]
 
