@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://dwp352sd18676"]
+
+[ext_resource type="Script" path="res://sun.gd" id="1_jlxi4"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_dmj8h"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oh203"]
+albedo_color = Color(0.70469, 0.240635, 0, 1)
+emission_enabled = true
+emission = Color(0.705882, 0.239216, 0, 1)
+
+[node name="sun" type="Node3D"]
+script = ExtResource("1_jlxi4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0)
+mesh = SubResource("SphereMesh_dmj8h")
+surface_material_override/0 = SubResource("StandardMaterial3D_oh203")
