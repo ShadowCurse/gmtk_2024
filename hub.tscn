@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://c1c8vwy6pw21f"]
+
+[ext_resource type="Script" path="res://hub.gd" id="1_5l4hg"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_sjeqg"]
+bottom_radius = 2.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eh3hh"]
+
+[node name="hub" type="Node3D"]
+script = ExtResource("1_5l4hg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CylinderMesh_sjeqg")
+surface_material_override/0 = SubResource("StandardMaterial3D_eh3hh")
