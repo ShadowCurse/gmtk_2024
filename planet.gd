@@ -3,7 +3,9 @@ class_name Planet
 
 @onready var planet_mesh: MeshInstance3D = $planet_mesh
 @onready var camera_3d: Camera3D = $Camera3D
+@onready var debug_cursor = $debug_cursor
 
+var planet_radius: float = 0.5
 var axis_rotation_speed: float = 0.1
 var mouse_input: Vector2
 
@@ -36,6 +38,20 @@ func _process(delta):
 	camera_3d.look_at(planet_mesh.global_position)
 	
 	mouse_input = Vector2.ZERO
+	
+	var mouse_pos = camera_3d.get_viewport().get_mouse_position()
+	var ray_origin = camera_3d.project_position(mouse_pos, position.z)
+	var ray_direction = (ray_origin - camera_3d.global_position).normalized();
+	
+	var desc = pow(ray_direction.dot(ray_origin - planet_mesh.global_position), 2) \
+	 		 - pow((ray_origin - planet_mesh.global_position).length(), 2) \
+			 + pow(planet_mesh.scale.x * planet_radius, 2)
+	if desc >= 0.0:
+		var d1 = -ray_direction.dot(ray_origin - planet_mesh.global_position) + sqrt(desc)
+		var d2 = -ray_direction.dot(ray_origin - planet_mesh.global_position) - sqrt(desc)
+		var p1 = ray_origin + ray_direction * d1
+		var p2 = ray_origin + ray_direction * d2
+		debug_cursor.global_position = p2
 
 func _unhandled_input(event)-> void:
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
