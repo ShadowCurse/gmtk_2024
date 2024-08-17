@@ -2,6 +2,8 @@ extends Node3D
 class_name Planet
 
 @export var resource_point_scene: PackedScene
+@export var resource_hub_scene: PackedScene
+
 @export var axis_rotation_speed: float = 0.1
 @export var camera_speed: float = 0.005 
 @export var camera_follow_speed: float = 40.0
@@ -53,24 +55,30 @@ func _process(delta):
 	 		 - pow((ray_origin - planet_mesh.global_position).length(), 2) \
 			 + pow(planet_mesh.scale.x * planet_radius, 2)
 	if desc >= 0.0:
-		var d1 = -ray_direction.dot(ray_origin - planet_mesh.global_position) + sqrt(desc)
+		#var d1 = -ray_direction.dot(ray_origin - planet_mesh.global_position) + sqrt(desc)
 		var d2 = -ray_direction.dot(ray_origin - planet_mesh.global_position) - sqrt(desc)
-		var p1 = ray_origin + ray_direction * d1
+		#var p1 = ray_origin + ray_direction * d1
 		var p2 = ray_origin + ray_direction * d2
 		debug_cursor.global_position = p2
-		if Input.is_action_just_pressed("ui_accept"):
-			var local_position = self.to_local(p2)
+		
+		var local_position = self.to_local(p2)
+		
+		# TODO find a more accurate version
+		var up = local_position.normalized()
+		var a = up.cross(Vector3.UP)
+		var b = up.cross(a)
+		var new_basis = Basis(a, up, b)
+		
+		if Input.is_action_just_pressed("place_resource"):
 			var resource_point: Node3D = resource_point_scene.instantiate()
 			resource_point.position = local_position
-			
-			# TODO find a more accurate version
-			var up = local_position.normalized()
-			var a = up.cross(Vector3.UP)
-			var b = up.cross(a)
-			var new_basis = Basis(a, up, b)
 			resource_point.rotation = new_basis.get_euler()
-			
 			self.add_child(resource_point)
+		if Input.is_action_just_pressed("place_hub"):
+			var resource_hub: Node3D = resource_hub_scene.instantiate()
+			resource_hub.position = local_position
+			resource_hub.rotation = new_basis.get_euler()
+			self.add_child(resource_hub)
 
 func _unhandled_input(event)-> void:
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_WHEEL_UP):
