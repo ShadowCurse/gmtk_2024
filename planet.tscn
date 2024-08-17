@@ -5,6 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://c1c8vwy6pw21f" path="res://hub.tscn" id="3_7mvm5"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_h2q1y"]
+radius = 100.0
+height = 200.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a0vee"]
 albedo_color = Color(0.60349, 0.491257, 0.364056, 1)
@@ -17,7 +19,6 @@ resource_point_scene = ExtResource("2_xjoyg")
 resource_hub_scene = ExtResource("3_7mvm5")
 
 [node name="planet_mesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
 mesh = SubResource("SphereMesh_h2q1y")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0vee")
 

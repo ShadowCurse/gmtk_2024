@@ -5,18 +5,18 @@ class_name Planet
 @export var resource_hub_scene: PackedScene
 
 @export var axis_rotation_speed: float = 0.1
-@export var camera_speed: float = 0.005 
+@export var camera_speed: float = 0.001 
 @export var camera_follow_speed: float = 40.0
-@export var camera_zoom_speed: float = 0.5
-@export var camera_distance: float = 10.0
-@export var camera_max_distance: float = 50.0
-@export var camera_min_distance: float = 6.0
+@export var camera_zoom_speed: float = 5.0
+@export var camera_distance: float = 150.0
+@export var camera_max_distance: float = 500.0
+@export var camera_min_distance: float = 120.0
 
 @onready var planet_mesh: MeshInstance3D = $planet_mesh
 @onready var camera_3d: Camera3D = $Camera3D
 @onready var debug_cursor = $debug_cursor
 
-var planet_radius: float = 0.5
+var planet_radius: float = 100.0
 var mouse_input: Vector2
 
 var camera_theta: float = 0.0
@@ -53,7 +53,7 @@ func _process(delta):
 	
 	var desc = pow(ray_direction.dot(ray_origin - planet_mesh.global_position), 2) \
 	 		 - pow((ray_origin - planet_mesh.global_position).length(), 2) \
-			 + pow(planet_mesh.scale.x * planet_radius, 2)
+			 + pow(planet_radius, 2)
 	if desc >= 0.0:
 		#var d1 = -ray_direction.dot(ray_origin - planet_mesh.global_position) + sqrt(desc)
 		var d2 = -ray_direction.dot(ray_origin - planet_mesh.global_position) - sqrt(desc)
@@ -82,11 +82,11 @@ func _process(delta):
 
 func _unhandled_input(event)-> void:
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_WHEEL_UP):
-		camera_distance -= 0.5
+		camera_distance -= camera_zoom_speed
 		if camera_distance < camera_min_distance:
 			camera_distance = camera_min_distance
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_WHEEL_DOWN):
-		camera_distance += 0.5
+		camera_distance += camera_zoom_speed
 		if camera_max_distance < camera_distance:
 			camera_distance = camera_max_distance
 
