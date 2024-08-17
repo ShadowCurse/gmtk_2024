@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://sopr4q2hdxso"]
+[gd_scene load_steps=6 format=3 uid="uid://sopr4q2hdxso"]
 
 [ext_resource type="Script" path="res://planet.gd" id="1_etj0d"]
+[ext_resource type="PackedScene" uid="uid://dwb8x5iqssv0y" path="res://resource_point.tscn" id="2_xjoyg"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_h2q1y"]
 
@@ -11,6 +12,7 @@ albedo_color = Color(0.60349, 0.491257, 0.364056, 1)
 
 [node name="planet" type="Node3D"]
 script = ExtResource("1_etj0d")
+resource_point_scene = ExtResource("2_xjoyg")
 
 [node name="planet_mesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)

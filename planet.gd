@@ -1,6 +1,8 @@
 extends Node3D
 class_name Planet
 
+@export var resource_point_scene: PackedScene
+
 @onready var planet_mesh: MeshInstance3D = $planet_mesh
 @onready var camera_3d: Camera3D = $Camera3D
 @onready var debug_cursor = $debug_cursor
@@ -52,6 +54,19 @@ func _process(delta):
 		var p1 = ray_origin + ray_direction * d1
 		var p2 = ray_origin + ray_direction * d2
 		debug_cursor.global_position = p2
+		if Input.is_action_just_pressed("ui_accept"):
+			var local_position = self.to_local(p2)
+			var resource_point: Node3D = resource_point_scene.instantiate()
+			resource_point.position = local_position
+			
+			# TODO find a more accurate version
+			var up = local_position.normalized()
+			var a = up.cross(Vector3.UP)
+			var b = up.cross(a)
+			var new_basis = Basis(a, up, b)
+			resource_point.rotation = new_basis.get_euler()
+			
+			self.add_child(resource_point)
 
 func _unhandled_input(event)-> void:
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
