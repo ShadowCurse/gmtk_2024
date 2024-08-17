@@ -4,6 +4,7 @@ class_name Planet
 @onready var planet_mesh: MeshInstance3D = $planet_mesh
 @onready var camera_3d: Camera3D = $Camera3D
 
+var axis_rotation_speed: float = 0.1
 var mouse_input: Vector2
 
 # Called when the node enters the scene tree for the first time.
@@ -13,7 +14,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	print(mouse_input)
+	self.rotate_y(axis_rotation_speed * delta)
 	
 	# update camera
 	var to_camera = camera_3d.position - planet_mesh.position
