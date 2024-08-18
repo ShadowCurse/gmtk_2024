@@ -8,13 +8,7 @@ class_name ResourceHub
 @export var border_elements: int = 32
 @export var spawn_offset: float = 3.0
 
-enum Type {
-    Red,
-    Green,
-    Blue,
-}
-
-@export var type: Type = Type.Red
+@export var type: ResourcePoint.Type = ResourcePoint.Type.Red
 
 @onready var hub_blue_lvl_1 = $hub_blue_lvl1
 @onready var hub_blue_lvl_2 = $hub_blue_lvl2
@@ -36,9 +30,9 @@ var level: int = 1
 
 func _ready():
     match self.type:
-        Type.Red: self.hub_red_lvl_1.visible = true
-        Type.Green: self.hub_green_lvl_1.visible = true
-        Type.Blue: self.hub_blue_lvl_1.visible = true
+        ResourcePoint.Type.Red: self.hub_red_lvl_1.visible = true
+        ResourcePoint.Type.Green: self.hub_green_lvl_1.visible = true
+        ResourcePoint.Type.Blue: self.hub_blue_lvl_1.visible = true
     
     self.create_border()
     self.update_workers()
@@ -49,11 +43,11 @@ func _ready():
 func _process(delta):
     pass
 
-func type_to_color(t: Type) -> Color:
+func type_to_color(t: ResourcePoint.Type) -> Color:
     match t:
-        Type.Red: return Color.RED
-        Type.Green: return  Color.GREEN
-        Type.Blue: return  Color.BLUE
+        ResourcePoint.Type.Red: return Color.RED
+        ResourcePoint.Type.Green: return  Color.GREEN
+        ResourcePoint.Type.Blue: return  Color.BLUE
     return Color.WHITE
 
 func create_border():
@@ -81,7 +75,7 @@ func select_resource_points(points: Array[ResourcePoint]):
             continue
 
         var angle = p.position.angle_to(self.position)
-        if angle < self.border_angle:
+        if angle < self.border_angle and p.type == self.type:
             var ri = ResourceInfo.new()
             ri.resource = p
             self.resources.append(ri)
@@ -96,6 +90,7 @@ func spawn_worker_to_resource(resource: ResourceInfo):
 
     var to_resource = (resource.resource.position - self.position).normalized()
     var worker: Worker = self.worker_scene.instantiate()
+    worker.type = self.type
     worker.position = self.position + to_resource * spawn_offset
     worker.resource_hub = self
     worker.resource_point = resource.resource

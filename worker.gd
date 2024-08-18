@@ -3,6 +3,7 @@ class_name Worker
 
 @onready var item = $item
 
+@export var type: ResourcePoint.Type = ResourcePoint.Type.Red
 @export var speed: float = 2.0
 
 var resource_hub: ResourceHub
@@ -50,6 +51,6 @@ func _process(delta):
             self.item.visible = false
             self.target = self.resource_point.position
         else:
-          if collider is ResourcePoint:
+          if collider is ResourcePoint and collider.type == self.type:
               self.item.visible = true
               self.target = self.resource_hub.position
