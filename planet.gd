@@ -4,7 +4,7 @@ class_name Planet
 @export var resource_point_scene: PackedScene
 @export var resource_hub_scene: PackedScene
 
-@export var axis_rotation_speed: float = 0.1
+@export var axis_rotation_speed: float = 0.0
 @export var camera_speed: float = 0.001 
 @export var camera_follow_speed: float = 40.0
 @export var camera_zoom_speed: float = 5.0
@@ -26,10 +26,11 @@ var selection_point_selected: bool
 var selection_point_position: Vector3
 var selection_point_normal: Vector3
 
-# Called when the node enters the scene tree for the first time.
+var resource_points: Array[ResourcePoint]
+var resource_hubs: Array[ResourceHub]
+
 func _ready():
     pass # Replace with function body.
-
 
 func _physics_process(_delta):
     var space_state = get_world_3d().direct_space_state
@@ -48,7 +49,6 @@ func _physics_process(_delta):
     else:
         self.selection_point_selected = false
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
     self.rotate_y(self.axis_rotation_speed * delta)
     
@@ -77,12 +77,15 @@ func _process(delta):
             resource_point.position = local_position
             resource_point.rotation = local_rotation
             self.add_child(resource_point)
+            self.resource_points.append(resource_point)
 
         if Input.is_action_just_pressed("place_hub"):
             var resource_hub: ResourceHub = self.resource_hub_scene.instantiate()
             resource_hub.position = local_position
             resource_hub.rotation = local_rotation
             self.add_child(resource_hub)
+            self.resource_hubs.append(resource_hub)
+            resource_hub.create_border()
 
 func _unhandled_input(event)-> void:
     if Input.is_mouse_button_pressed(MOUSE_BUTTON_WHEEL_UP):
