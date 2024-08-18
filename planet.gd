@@ -19,10 +19,10 @@ class_name Planet
 @onready var debug_cursor = $debug_cursor
 
 var planet_radius: float = 100.0
-var mouse_input: Vector2
+var mouse_input: Vector2 = Vector2.ZERO
 
-var camera_theta: float = 0.0
-var camera_phi: float = 0.0
+var camera_theta: float = PI / 2.0
+var camera_phi: float = PI / 2.0
 
 var selection_point_selected: bool
 var selection_point_position: Vector3
@@ -39,9 +39,9 @@ func _ready():
 
 func _physics_process(_delta):
     var space_state = get_world_3d().direct_space_state
-    var mouse_pos = camera_3d.get_viewport().get_mouse_position()
-    var from = camera_3d.project_ray_origin(mouse_pos)
-    var to = from + camera_3d.project_ray_normal(mouse_pos) * 1000.0
+    var mouse_pos = self.camera_3d.get_viewport().get_mouse_position()
+    var from = self.camera_3d.project_ray_origin(mouse_pos)
+    var to = from + self.camera_3d.project_ray_normal(mouse_pos) * 1000.0
 
     var query = PhysicsRayQueryParameters3D.create(from, to)
     var result = space_state.intersect_ray(query)
@@ -116,6 +116,7 @@ func _unhandled_input(event)-> void:
 func _on_timer_timeout():
     var random_theta = randf_range(0.0, 2.0 * PI * spawn_area_progress)
     var random_phi = randf_range(-PI / 2.0  * spawn_area_progress, PI / 2  * spawn_area_progress)
+    random_theta += PI / 4.0
 
     var x = 100.0 * sin(random_theta) * cos(random_phi)
     var y = 100.0 * sin(random_theta) * sin(random_phi)
