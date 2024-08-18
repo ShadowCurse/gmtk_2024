@@ -6,6 +6,7 @@ class_name ResourceHub
 @export var border_element_scene: PackedScene
 @export var border_angle: float = PI / 16.0
 @export var border_elements: int = 32
+@export var spawn_offset: float = 3.0
 
 enum Type {
     Red,
@@ -95,7 +96,7 @@ func spawn_worker_to_resource(resource: ResourceInfo):
 
     var to_resource = (resource.resource.position - self.position).normalized()
     var worker: Worker = self.worker_scene.instantiate()
-    worker.position = self.position + to_resource * 3.0
+    worker.position = self.position + to_resource * spawn_offset
     worker.resource_hub = self
     worker.resource_point = resource.resource
     resource.workers.append(worker)

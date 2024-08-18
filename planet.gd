@@ -1,7 +1,7 @@
 extends Node3D
 class_name Planet
 
-@export var new_resource_safe_zone: float = PI / 128.0
+@export var new_resource_safe_zone: float = PI / 100.0
 
 @export var resource_point_scene: PackedScene
 @export var resource_hub_scene: PackedScene
