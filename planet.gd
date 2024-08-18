@@ -31,6 +31,9 @@ var selection_point_normal: Vector3
 var resource_points: Array[ResourcePoint]
 var resource_hubs: Array[ResourceHub]
 
+var spawn_area_progress: float = 0.1
+var spawn_area_progress_speed: float = 0.01
+
 func _ready():
     pass # Replace with function body.
 
@@ -52,6 +55,11 @@ func _physics_process(_delta):
         self.selection_point_selected = false
 
 func _process(delta):
+    self.spawn_area_progress += delta * spawn_area_progress_speed
+    if 1.0 < self.spawn_area_progress:
+        self.spawn_area_progress = 1.0
+
+
     self.rotate_y(self.axis_rotation_speed * delta)
     
     # update camera
@@ -106,8 +114,8 @@ func _unhandled_input(event)-> void:
             mouse_input += event.xformed_by(viewport_transform).relative
             
 func _on_timer_timeout():
-    var random_theta = randf_range(0.0, 2.0 * PI)
-    var random_phi = randf_range(-PI / 2.0, PI / 2)
+    var random_theta = randf_range(0.0, 2.0 * PI * spawn_area_progress)
+    var random_phi = randf_range(-PI / 2.0  * spawn_area_progress, PI / 2  * spawn_area_progress)
 
     var x = 100.0 * sin(random_theta) * cos(random_phi)
     var y = 100.0 * sin(random_theta) * sin(random_phi)
