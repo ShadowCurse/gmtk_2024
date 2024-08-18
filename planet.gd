@@ -141,4 +141,7 @@ func _on_timer_timeout():
     self.add_child(resource_point)
     self.resource_points.append(resource_point)
 
+    for hub in self.resource_hubs:
+        hub.select_resource_points(self.resource_points)
+        hub.update_workers()
 

@@ -29,8 +29,7 @@ func _ready():
     var color = self.type_to_color(self.type)
     mesh_instance_3d.get_surface_override_material(0).albedo_color = color
     self.create_border()
-    for ri in self.resources:
-        self.spawn_worker_to_resource(ri)
+    self.update_workers()
 
 func _process(delta):
     pass
@@ -57,19 +56,33 @@ func create_border():
 
 func select_resource_points(points: Array[ResourcePoint]):
     for p in points:
+        # skip if already present
+        var c = false
+        for ri in self.resources:
+            if p == ri.resource:
+                c = true
+                break
+        if c:
+            continue
+
         var angle = p.position.angle_to(self.position)
         if angle < self.border_angle:
             var ri = ResourceInfo.new()
             ri.resource = p
             self.resources.append(ri)
 
+func update_workers():
+    for ri in self.resources:
+        self.spawn_worker_to_resource(ri)
+
 func spawn_worker_to_resource(resource: ResourceInfo):
-    if len(resource.workers) == self.level:
+    if resource.workers.size() == self.level:
         return
 
     var to_resource = (resource.resource.position - self.position).normalized()
     var worker: Worker = self.worker_scene.instantiate()
-    worker.position = self.position + to_resource * 2.0
+    worker.position = self.position + to_resource * 3.0
     worker.resource_hub = self
     worker.resource_point = resource.resource
+    resource.workers.append(worker)
     planet.add_child(worker)
