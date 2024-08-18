@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://sopr4q2hdxso"]
+[gd_scene load_steps=8 format=3 uid="uid://sopr4q2hdxso"]
 
 [ext_resource type="Script" path="res://planet.gd" id="1_etj0d"]
 [ext_resource type="PackedScene" uid="uid://dwb8x5iqssv0y" path="res://resource_point.tscn" id="2_xjoyg"]
@@ -11,9 +11,12 @@ height = 200.0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a0vee"]
 albedo_color = Color(0.60349, 0.491257, 0.364056, 1)
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_fh5ey"]
+radius = 100.0
+
 [sub_resource type="SphereMesh" id="SphereMesh_j28a2"]
 
-[node name="planet" type="Node3D"]
+[node name="planet" type="StaticBody3D"]
 script = ExtResource("1_etj0d")
 resource_point_scene = ExtResource("2_xjoyg")
 resource_hub_scene = ExtResource("3_7mvm5")
@@ -21,6 +24,9 @@ resource_hub_scene = ExtResource("3_7mvm5")
 [node name="planet_mesh" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_h2q1y")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0vee")
+
+[node name="planet_collision" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_fh5ey")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)

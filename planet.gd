@@ -22,66 +22,66 @@ var mouse_input: Vector2
 var camera_theta: float = 0.0
 var camera_phi: float = 0.0
 
+var selection_point_selected: bool
+var selection_point_position: Vector3
+var selection_point_normal: Vector3
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
     pass # Replace with function body.
 
 
+func _physics_process(_delta):
+    var space_state = get_world_3d().direct_space_state
+    var mouse_pos = camera_3d.get_viewport().get_mouse_position()
+    var from = camera_3d.project_ray_origin(mouse_pos)
+    var to = from + camera_3d.project_ray_normal(mouse_pos) * 1000.0
+
+    var query = PhysicsRayQueryParameters3D.create(from, to)
+    var result = space_state.intersect_ray(query)
+    if !result.is_empty():
+        self.debug_cursor.global_position = result.position
+
+        self.selection_point_selected = true
+        self.selection_point_position = result.position
+        self.selection_point_normal = result.normal
+    else:
+        self.selection_point_selected = false
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-    self.rotate_y(axis_rotation_speed * delta)
+    self.rotate_y(self.axis_rotation_speed * delta)
     
     # update camera
-    camera_phi -= mouse_input.x * camera_speed
-    camera_theta -= mouse_input.y * camera_speed
+    self.camera_phi -= self.mouse_input.x * self.camera_speed
+    self.camera_theta -= self.mouse_input.y * self.camera_speed
     # clamp Y rotation
-    if camera_theta < 0.1:
-        camera_theta = 0.1
-    if camera_theta > PI - 0.1:
-        camera_theta = PI - 0.1
-    var new_z = camera_distance * sin(camera_theta) * cos(camera_phi)
-    var new_x = camera_distance * sin(camera_theta) * sin(camera_phi)
-    var new_y = camera_distance * cos(camera_theta)
+    if self.camera_theta < 0.1:
+        self.camera_theta = 0.1
+    if self.camera_theta > PI - 0.1:
+        self.camera_theta = PI - 0.1
+    var new_z = self.camera_distance * sin(self.camera_theta) * cos(self.camera_phi)
+    var new_x = self.camera_distance * sin(self.camera_theta) * sin(self.camera_phi)
+    var new_y = self.camera_distance * cos(self.camera_theta)
     var new_position = Vector3(new_x, new_y, new_z)
-    camera_3d.position = new_position + (camera_3d.position - new_position) * exp(-camera_follow_speed * delta)
-    camera_3d.look_at(planet_mesh.global_position)
-    mouse_input = Vector2.ZERO
-    
-    var mouse_pos = camera_3d.get_viewport().get_mouse_position()
-    var ray_origin = camera_3d.project_position(mouse_pos, position.z)
-    var ray_direction = (ray_origin - camera_3d.global_position).normalized();
-    
-    var desc = pow(ray_direction.dot(ray_origin - planet_mesh.global_position), 2) \
-              - pow((ray_origin - planet_mesh.global_position).length(), 2) \
-             + pow(planet_radius, 2)
-            
-    if desc >= 0.0:
-        var d1 = -ray_direction.dot(ray_origin - planet_mesh.global_position) + sqrt(desc)
-        var d2 = -ray_direction.dot(ray_origin - planet_mesh.global_position) - sqrt(desc)
-        var p1 = ray_origin + ray_direction * d1
-        var p2 = ray_origin + ray_direction * d2
-        var closest = p1
-        if d2 < d1:
-            closest = p2
-        debug_cursor.global_position = closest
-        
-        var local_position = self.to_local(closest)
-        
-        # TODO find a more accurate version
-        var up = local_position.normalized()
-        var a = up.cross(Vector3.UP)
-        var b = up.cross(a)
-        var new_basis = Basis(a, up, b)
+    self.camera_3d.position = new_position + (self.camera_3d.position - new_position) * exp(-self.camera_follow_speed * delta)
+    self.camera_3d.look_at(planet_mesh.global_position)
+    self.mouse_input = Vector2.ZERO
+
+    if self.selection_point_selected:
+        var local_position = self.to_local(self.selection_point_position)
+        var local_rotation = Quaternion(Vector3.UP, local_position.normalized()).get_euler()
         
         if Input.is_action_just_pressed("place_resource"):
-            var resource_point: Node3D = resource_point_scene.instantiate()
+            var resource_point: ResourcePoint = self.resource_point_scene.instantiate()
             resource_point.position = local_position
-            resource_point.rotation = new_basis.get_euler()
+            resource_point.rotation = local_rotation
             self.add_child(resource_point)
+
         if Input.is_action_just_pressed("place_hub"):
-            var resource_hub: Node3D = resource_hub_scene.instantiate()
+            var resource_hub: ResourceHub = self.resource_hub_scene.instantiate()
             resource_hub.position = local_position
-            resource_hub.rotation = new_basis.get_euler()
+            resource_hub.rotation = local_rotation
             self.add_child(resource_hub)
 
 func _unhandled_input(event)-> void:
