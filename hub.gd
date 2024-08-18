@@ -70,5 +70,6 @@ func spawn_worker_to_resource(resource: ResourceInfo):
     var to_resource = (resource.resource.position - self.position).normalized()
     var worker: Worker = self.worker_scene.instantiate()
     worker.position = self.position + to_resource * 2.0
+    worker.resource_hub = self
     worker.resource_point = resource.resource
     planet.add_child(worker)

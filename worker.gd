@@ -1,16 +1,19 @@
 extends CharacterBody3D
 class_name Worker
 
+@onready var item = $item
+
 @export var speed: float = 2.0
 
+var resource_hub: ResourceHub
 var resource_point: ResourcePoint
 
-# Called when the node enters the scene tree for the first time.
+var target: Vector3
+
 func _ready():
-    pass # Replace with function body.
+    self.target = self.resource_point.position
+    self.item.visible = false
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
     if Input.is_action_pressed("ui_up"):
         self.velocity += -global_transform.basis.z * speed * delta
@@ -27,20 +30,26 @@ func _process(delta):
     self.velocity += -from_center * 9.8 * delta
 
 
-    var to_resource = self.position.direction_to(resource_point.position).normalized()
+    var to_resource = self.position.direction_to(target).normalized()
     var normal = self.position.normalized()
-
     var angle = to_resource.angle_to(normal) - PI / 2
-    var rotation_axis = to_resource.cross(normal)
+    var rotation_axis = to_resource.cross(normal).normalized()
     var to_resource_norm = to_resource.rotated(rotation_axis, angle).normalized()
     var rotation_angle = (-global_transform.basis.z).angle_to(to_resource_norm)
-
-    if resource_point.position.y < self.position.y:
+    if target.y < self.position.y:
         rotation_angle = 2.0 *PI - rotation_angle
-
     self.rotate(normal, rotation_angle)
-    print(rad_to_deg(rotation_angle))
 
     self.velocity += to_resource * speed * delta
-    
     move_and_slide()
+
+    for i in range(self.get_slide_collision_count()):
+        var collision = self.get_slide_collision(i)
+        var collider = collision.get_collider()
+        if collider is ResourceHub:
+            self.item.visible = false
+            self.target = self.resource_point.position
+        else:
+          if collider is ResourcePoint:
+              self.item.visible = true
+              self.target = self.resource_hub.position
