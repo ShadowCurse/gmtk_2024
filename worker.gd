@@ -23,5 +23,4 @@ func _process(delta):
     self.up_direction = from_center
     self.rotation = Quaternion(Vector3.UP, from_center).get_euler()
     self.velocity += -from_center * 9.8 * delta
-    print(self.velocity)
     move_and_slide()
