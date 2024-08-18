@@ -1,6 +1,8 @@
 extends Node3D
 class_name Planet
 
+@export var new_resource_safe_zone: float = PI / 128.0
+
 @export var resource_point_scene: PackedScene
 @export var resource_hub_scene: PackedScene
 
@@ -103,4 +105,40 @@ func _unhandled_input(event)-> void:
             var viewport_transform: Transform2D = get_tree().root.get_final_transform()
             mouse_input += event.xformed_by(viewport_transform).relative
             
+func _on_timer_timeout():
+    var random_theta = randf_range(0.0, 2.0 * PI)
+    var random_phi = randf_range(-PI / 2.0, PI / 2)
+
+    var x = 100.0 * sin(random_theta) * cos(random_phi)
+    var y = 100.0 * sin(random_theta) * sin(random_phi)
+    var z = 100.0 * cos(random_theta)
+
+    var random_position = Vector3(x, y, z)
+
+    const MAX_ITERATIONS: int = 2
+    for i in range(MAX_ITERATIONS):
+        for hub in self.resource_hubs:
+            if hub.position.angle_to(random_position) < self.new_resource_safe_zone:
+                var delta_angle = self.new_resource_safe_zone - hub.position.angle_to(random_position)
+                var axis = (hub.position.cross(random_position)).normalized()
+                random_position = random_position.rotated(axis, delta_angle)
+                if i == MAX_ITERATIONS - 1:
+                    return
+
+        for point in self.resource_points:
+            if point.position.angle_to(random_position) < self.new_resource_safe_zone:
+                var delta_angle = self.new_resource_safe_zone - point.position.angle_to(random_position)
+                var axis = (point.position.cross(random_position)).normalized()
+                random_position = random_position.rotated(axis, delta_angle)
+                if i == MAX_ITERATIONS - 1:
+                    return
+
+    var local_position = self.to_local(random_position)
+    var local_rotation = Quaternion(Vector3.UP, local_position.normalized()).get_euler()
+    var resource_point: ResourcePoint = self.resource_point_scene.instantiate()
+    resource_point.position = local_position
+    resource_point.rotation = local_rotation
+    self.add_child(resource_point)
+    self.resource_points.append(resource_point)
+
 
