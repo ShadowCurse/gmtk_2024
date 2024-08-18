@@ -124,6 +124,8 @@ func _on_timer_timeout():
 
     var random_position = Vector3(x, y, z)
 
+    var random_type = ResourcePoint.Type.values().pick_random()
+
     const MAX_ITERATIONS: int = 2
     for i in range(MAX_ITERATIONS):
         for hub in self.resource_hubs:
@@ -145,6 +147,7 @@ func _on_timer_timeout():
     var local_position = self.to_local(random_position)
     var local_rotation = Quaternion(Vector3.UP, local_position.normalized()).get_euler()
     var resource_point: ResourcePoint = self.resource_point_scene.instantiate()
+    resource_point.type = random_type
     resource_point.position = local_position
     resource_point.rotation = local_rotation
     self.add_child(resource_point)
