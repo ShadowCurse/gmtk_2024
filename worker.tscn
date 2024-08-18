@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://cckrf2qbeium6"]
+
+[ext_resource type="Script" path="res://worker.gd" id="1_18uty"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_6pawm"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_53g4u"]
+size = Vector3(0.5, 0.5, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gp66d"]
+
+[node name="worker" type="CharacterBody3D"]
+collision_mask = 7
+script = ExtResource("1_18uty")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_6pawm")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45389, -0.143986)
+mesh = SubResource("BoxMesh_53g4u")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_gp66d")

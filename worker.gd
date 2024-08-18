@@ -1,9 +1,7 @@
-extends Node3D
+extends CharacterBody3D
 class_name Worker
 
-@export var speed: float = 20.0
-
-@onready var ray_cast_3d = $RayCast3D
+@export var speed: float = 2.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -13,15 +11,17 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
     if Input.is_action_pressed("ui_up"):
-        self.position += -global_transform.basis.z * speed * delta
+        self.velocity += -global_transform.basis.z * speed * delta
     if Input.is_action_pressed("ui_down"):
-        self.position += global_transform.basis.z * speed * delta
+        self.velocity += global_transform.basis.z * speed * delta
     if Input.is_action_pressed("ui_left"):
-        self.position += -global_transform.basis.x * speed * delta
+        self.velocity += -global_transform.basis.x * speed * delta
     if Input.is_action_pressed("ui_right"):
-        self.position += global_transform.basis.x * speed * delta
-        
-    var to_center = self.position.normalized()
-    self.position = to_center * 100.0
-    rotation = Quaternion(Vector3.UP, to_center).get_euler()
-    
+        self.velocity += global_transform.basis.x * speed * delta
+
+    var from_center = self.position.normalized()
+    self.up_direction = from_center
+    self.rotation = Quaternion(Vector3.UP, from_center).get_euler()
+    self.velocity += -from_center * 9.8 * delta
+    print(self.velocity)
+    move_and_slide()
