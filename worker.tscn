@@ -16,6 +16,7 @@ size = Vector3(0.5, 0.5, 0.5)
 albedo_color = Color(0.343048, 0.31453, 0.266026, 1)
 
 [node name="worker" type="CharacterBody3D"]
+collision_layer = 2
 collision_mask = 7
 script = ExtResource("1_18uty")
 

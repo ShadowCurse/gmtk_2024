@@ -50,7 +50,11 @@ func _process(delta):
         if collider is ResourceHub:
             self.item.visible = false
             self.target = self.resource_point.position
-        else:
-          if collider is ResourcePoint and collider.type == self.type:
-              self.item.visible = true
-              self.target = self.resource_hub.position
+        elif collider is Worker:
+            self.velocity += self.position.normalized() * 5.0
+            self.item.visible = false
+            self.target = self.resource_point.position
+
+func go_to_hub():
+    self.item.visible = true
+    self.target = self.resource_hub.position

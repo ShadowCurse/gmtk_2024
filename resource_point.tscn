@@ -8,11 +8,8 @@
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_ch2x0"]
 radius = 1.0
 
-[node name="resource_point" type="StaticBody3D"]
+[node name="resource_point" type="Node3D"]
 script = ExtResource("1_2mhy5")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("CylinderShape3D_ch2x0")
 
 [node name="pile_red" parent="." instance=ExtResource("2_ol0nv")]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
@@ -25,3 +22,13 @@ visible = false
 [node name="pile_blue" parent="." instance=ExtResource("4_aenpi")]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
 visible = false
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.876857, 0)
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("CylinderShape3D_ch2x0")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
