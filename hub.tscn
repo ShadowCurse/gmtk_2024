@@ -1,27 +1,55 @@
-[gd_scene load_steps=7 format=3 uid="uid://c1c8vwy6pw21f"]
+[gd_scene load_steps=14 format=3 uid="uid://c1c8vwy6pw21f"]
 
 [ext_resource type="Script" path="res://hub.gd" id="1_5l4hg"]
 [ext_resource type="PackedScene" uid="uid://cckrf2qbeium6" path="res://worker.tscn" id="2_3bq5y"]
 [ext_resource type="PackedScene" uid="uid://dlret3kv42ew5" path="res://hub_border_element.tscn" id="2_ofqwb"]
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_sjeqg"]
-top_radius = 2.0
-bottom_radius = 2.5
-height = 3.0
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eh3hh"]
+[ext_resource type="PackedScene" uid="uid://dmfovwtlwe61w" path="res://assets/hub_blue_lvl1.glb" id="4_jyrmp"]
+[ext_resource type="PackedScene" uid="uid://bhsote7n2yvmv" path="res://assets/hub_blue_lvl2.glb" id="5_wey62"]
+[ext_resource type="PackedScene" uid="uid://ddw3v78y3sjbn" path="res://assets/hub_blue_lvl3.glb" id="6_xc8db"]
+[ext_resource type="PackedScene" uid="uid://j204lfd5q2gm" path="res://assets/hub_green_lvl1.glb" id="7_tvoou"]
+[ext_resource type="PackedScene" uid="uid://c6x3uq3ijdk3i" path="res://assets/hub_green_lvl2.glb" id="8_olgkt"]
+[ext_resource type="PackedScene" uid="uid://rsn8dobf5koc" path="res://assets/hub_green_lvl3.glb" id="9_lycr0"]
+[ext_resource type="PackedScene" uid="uid://c8h16j61tgnbf" path="res://assets/hub_red_lvl1.glb" id="10_wv5ii"]
+[ext_resource type="PackedScene" uid="uid://b86qbix61a8pn" path="res://assets/hub_red_lvl2.glb" id="11_vrqs7"]
+[ext_resource type="PackedScene" uid="uid://c6hyjkyffl28" path="res://assets/hub_red_lvl3.glb" id="12_t1wcr"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_a6hrk"]
-radius = 2.5
+height = 3.35499
+radius = 4.69085
 
 [node name="hub" type="StaticBody3D"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 script = ExtResource("1_5l4hg")
 worker_scene = ExtResource("2_3bq5y")
 border_element_scene = ExtResource("2_ofqwb")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("CylinderMesh_sjeqg")
-surface_material_override/0 = SubResource("StandardMaterial3D_eh3hh")
-
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.92518, 0)
 shape = SubResource("CylinderShape3D_a6hrk")
+
+[node name="hub_blue_lvl1" parent="." instance=ExtResource("4_jyrmp")]
+visible = false
+
+[node name="hub_blue_lvl2" parent="." instance=ExtResource("5_wey62")]
+visible = false
+
+[node name="hub_blue_lvl3" parent="." instance=ExtResource("6_xc8db")]
+visible = false
+
+[node name="hub_green_lvl1" parent="." instance=ExtResource("7_tvoou")]
+visible = false
+
+[node name="hub_green_lvl2" parent="." instance=ExtResource("8_olgkt")]
+visible = false
+
+[node name="hub_green_lvl3" parent="." instance=ExtResource("9_lycr0")]
+visible = false
+
+[node name="hub_red_lvl1" parent="." instance=ExtResource("10_wv5ii")]
+visible = false
+
+[node name="hub_red_lvl2" parent="." instance=ExtResource("11_vrqs7")]
+visible = false
+
+[node name="hub_red_lvl3" parent="." instance=ExtResource("12_t1wcr")]
+visible = false

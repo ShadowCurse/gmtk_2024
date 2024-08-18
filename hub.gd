@@ -4,10 +4,8 @@ class_name ResourceHub
 @export var planet: Node3D
 @export var worker_scene: PackedScene
 @export var border_element_scene: PackedScene
-@export var border_angle: float = PI / 32.0
+@export var border_angle: float = PI / 16.0
 @export var border_elements: int = 32
-
-@onready var mesh_instance_3d = $MeshInstance3D
 
 enum Type {
     Red,
@@ -16,6 +14,16 @@ enum Type {
 }
 
 @export var type: Type = Type.Red
+
+@onready var hub_blue_lvl_1 = $hub_blue_lvl1
+@onready var hub_blue_lvl_2 = $hub_blue_lvl2
+@onready var hub_blue_lvl_3 = $hub_blue_lvl3
+@onready var hub_green_lvl_1 = $hub_green_lvl1
+@onready var hub_green_lvl_2 = $hub_green_lvl2
+@onready var hub_green_lvl_3 = $hub_green_lvl3
+@onready var hub_red_lvl_1 = $hub_red_lvl1
+@onready var hub_red_lvl_2 = $hub_red_lvl2
+@onready var hub_red_lvl_3 = $hub_red_lvl3
 
 class ResourceInfo:
     var resource: ResourcePoint
@@ -26,10 +34,16 @@ var resources: Array[ResourceInfo]
 var level: int = 1
 
 func _ready():
-    var color = self.type_to_color(self.type)
-    mesh_instance_3d.get_surface_override_material(0).albedo_color = color
+    match self.type:
+        Type.Red: self.hub_red_lvl_1.visible = true
+        Type.Green: self.hub_green_lvl_1.visible = true
+        Type.Blue: self.hub_blue_lvl_1.visible = true
+    
     self.create_border()
     self.update_workers()
+    
+    var random_angle = randf_range(0.0, 2.0 * PI)
+    self.rotate_object_local(Vector3.UP, random_angle)
 
 func _process(delta):
     pass
