@@ -81,11 +81,12 @@ func _process(delta):
 
         if Input.is_action_just_pressed("place_hub"):
             var resource_hub: ResourceHub = self.resource_hub_scene.instantiate()
+            resource_hub.planet = self
             resource_hub.position = local_position
             resource_hub.rotation = local_rotation
+            resource_hub.select_resource_points(self.resource_points)
             self.add_child(resource_hub)
             self.resource_hubs.append(resource_hub)
-            resource_hub.create_border()
 
 func _unhandled_input(event)-> void:
     if Input.is_mouse_button_pressed(MOUSE_BUTTON_WHEEL_UP):

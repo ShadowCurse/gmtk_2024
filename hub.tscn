@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://c1c8vwy6pw21f"]
+[gd_scene load_steps=7 format=3 uid="uid://c1c8vwy6pw21f"]
 
 [ext_resource type="Script" path="res://hub.gd" id="1_5l4hg"]
+[ext_resource type="PackedScene" uid="uid://cckrf2qbeium6" path="res://worker.tscn" id="2_3bq5y"]
 [ext_resource type="PackedScene" uid="uid://dlret3kv42ew5" path="res://hub_border_element.tscn" id="2_ofqwb"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_sjeqg"]
@@ -15,6 +16,7 @@ radius = 2.5
 
 [node name="hub" type="StaticBody3D"]
 script = ExtResource("1_5l4hg")
+worker_scene = ExtResource("2_3bq5y")
 border_element_scene = ExtResource("2_ofqwb")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

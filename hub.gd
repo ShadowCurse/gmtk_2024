@@ -1,6 +1,8 @@
 extends Node3D
 class_name ResourceHub
 
+@export var planet: Node3D
+@export var worker_scene: PackedScene
 @export var border_element_scene: PackedScene
 @export var border_angle: float = PI / 32.0
 @export var border_elements: int = 32
@@ -15,9 +17,20 @@ enum Type {
 
 @export var type: Type = Type.Red
 
+class ResourceInfo:
+    var resource: ResourcePoint
+    var workers: Array[Worker]
+
+var resources: Array[ResourceInfo]
+# Determine number of workes per resource
+var level: int = 1
+
 func _ready():
     var color = self.type_to_color(self.type)
     mesh_instance_3d.get_surface_override_material(0).albedo_color = color
+    self.create_border()
+    for ri in self.resources:
+        self.spawn_worker_to_resource(ri)
 
 func _process(delta):
     pass
@@ -42,3 +55,19 @@ func create_border():
         e.color = color
         self.add_child(e)
 
+func select_resource_points(points: Array[ResourcePoint]):
+    for p in points:
+        var angle = p.position.angle_to(self.position)
+        if angle < self.border_angle:
+            var ri = ResourceInfo.new()
+            ri.resource = p
+            self.resources.append(ri)
+
+func spawn_worker_to_resource(resource: ResourceInfo):
+    if len(resource.workers) == self.level:
+        return
+
+    var to_resource = (resource.resource.position - self.position).normalized()
+    var worker: Worker = self.worker_scene.instantiate()
+    worker.position = self.position + to_resource * 2.0
+    planet.add_child(worker)
