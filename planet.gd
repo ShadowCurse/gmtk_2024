@@ -54,14 +54,18 @@ func _process(delta):
 	var desc = pow(ray_direction.dot(ray_origin - planet_mesh.global_position), 2) \
 	 		 - pow((ray_origin - planet_mesh.global_position).length(), 2) \
 			 + pow(planet_radius, 2)
+			
 	if desc >= 0.0:
-		#var d1 = -ray_direction.dot(ray_origin - planet_mesh.global_position) + sqrt(desc)
+		var d1 = -ray_direction.dot(ray_origin - planet_mesh.global_position) + sqrt(desc)
 		var d2 = -ray_direction.dot(ray_origin - planet_mesh.global_position) - sqrt(desc)
-		#var p1 = ray_origin + ray_direction * d1
+		var p1 = ray_origin + ray_direction * d1
 		var p2 = ray_origin + ray_direction * d2
-		debug_cursor.global_position = p2
+		var closest = p1
+		if d2 < d1:
+			closest = p2
+		debug_cursor.global_position = closest
 		
-		var local_position = self.to_local(p2)
+		var local_position = self.to_local(closest)
 		
 		# TODO find a more accurate version
 		var up = local_position.normalized()
