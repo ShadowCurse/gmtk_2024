@@ -36,7 +36,8 @@ shadow_transmittance_bias = 6.303
 shadow_opacity = 0.0
 shadow_blur = 0.0
 
-[node name="planet" parent="." instance=ExtResource("2_a8n8s")]
+[node name="planet" parent="." node_paths=PackedStringArray("ui") instance=ExtResource("2_a8n8s")]
+ui = NodePath("../ui")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_evmge")

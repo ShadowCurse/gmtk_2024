@@ -97,3 +97,6 @@ func spawn_worker_to_resource(resource: ResourceInfo):
     worker.resource_point = resource.resource
     resource.workers.append(worker)
     planet.add_child(worker)
+    
+func add_resource(t: ResourcePoint.Type):
+    planet.add_resource(t)

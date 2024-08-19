@@ -1,4 +1,5 @@
 extends Control
+class_name UI
 
 @onready var red_count = $VBoxContainer/HBoxContainer/red/HBoxContainer/red_count
 @onready var green_count = $VBoxContainer/HBoxContainer/green/HBoxContainer/green_count

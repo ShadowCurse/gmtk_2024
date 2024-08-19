@@ -1,6 +1,8 @@
 extends Node3D
 class_name Planet
 
+@export var ui: UI
+
 @export var new_resource_safe_zone: float = PI / 100.0
 
 @export var resource_point_scene: PackedScene
@@ -32,6 +34,10 @@ var resource_hubs: Array[ResourceHub]
 
 var spawn_area_progress: float = 0.1
 var spawn_area_progress_speed: float = 0.01
+
+var red_resources: int = 0
+var green_resources: int = 0
+var blue_resources: int = 0
 
 func _ready():
     pass # Replace with function body.
@@ -167,4 +173,17 @@ func _on_timer_timeout():
     for hub in self.resource_hubs:
         hub.select_resource_points(self.resource_points)
         hub.update_workers()
+
+
+func add_resource(type: ResourcePoint.Type):
+    match type:
+      ResourcePoint.Type.Red: 
+        self.red_resources += 1
+        self.ui.update_red_count(self.red_resources)
+      ResourcePoint.Type.Green: 
+        self.green_resources += 1
+        self.ui.update_green_count(self.green_resources)
+      ResourcePoint.Type.Blue: 
+        self.blue_resources += 1
+        self.ui.update_blue_count(self.blue_resources)
 
