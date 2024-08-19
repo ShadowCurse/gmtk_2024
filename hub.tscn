@@ -1,23 +1,42 @@
-[gd_scene load_steps=16 format=3 uid="uid://c1c8vwy6pw21f"]
+[gd_scene load_steps=15 format=3 uid="uid://c1c8vwy6pw21f"]
 
 [ext_resource type="Script" path="res://hub.gd" id="1_5l4hg"]
 [ext_resource type="PackedScene" uid="uid://cckrf2qbeium6" path="res://worker.tscn" id="2_3bq5y"]
 [ext_resource type="PackedScene" uid="uid://dlret3kv42ew5" path="res://hub_red_border.tscn" id="3_x44u2"]
-[ext_resource type="PackedScene" uid="uid://dmfovwtlwe61w" path="res://assets/hub_blue_lvl1.glb" id="4_jyrmp"]
 [ext_resource type="PackedScene" uid="uid://da4ehu7ru7mpb" path="res://hub_green_border.tscn" id="4_ow3bj"]
 [ext_resource type="PackedScene" uid="uid://55aovev8pnbn" path="res://hub_blue_border.tscn" id="5_81c1m"]
-[ext_resource type="PackedScene" uid="uid://bhsote7n2yvmv" path="res://assets/hub_blue_lvl2.glb" id="5_wey62"]
 [ext_resource type="PackedScene" uid="uid://ddw3v78y3sjbn" path="res://assets/hub_blue_lvl3.glb" id="6_xc8db"]
-[ext_resource type="PackedScene" uid="uid://j204lfd5q2gm" path="res://assets/hub_green_lvl1.glb" id="7_tvoou"]
-[ext_resource type="PackedScene" uid="uid://c6x3uq3ijdk3i" path="res://assets/hub_green_lvl2.glb" id="8_olgkt"]
 [ext_resource type="PackedScene" uid="uid://rsn8dobf5koc" path="res://assets/hub_green_lvl3.glb" id="9_lycr0"]
-[ext_resource type="PackedScene" uid="uid://c8h16j61tgnbf" path="res://assets/hub_red_lvl1.glb" id="10_wv5ii"]
-[ext_resource type="PackedScene" uid="uid://b86qbix61a8pn" path="res://assets/hub_red_lvl2.glb" id="11_vrqs7"]
 [ext_resource type="PackedScene" uid="uid://c6hyjkyffl28" path="res://assets/hub_red_lvl3.glb" id="12_t1wcr"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_a6hrk"]
 height = 3.35499
 radius = 4.69085
+
+[sub_resource type="Curve" id="Curve_3rv7o"]
+_data = [Vector2(0.00694445, 0.990845), 0.0, 0.0, 0, 0, Vector2(0.996528, 0.212676), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_x8ei5"]
+curve = SubResource("Curve_3rv7o")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jtlqy"]
+direction = Vector3(0, 1, 0)
+spread = 29.051
+initial_velocity_min = 1.0
+initial_velocity_max = 1.0
+gravity = Vector3(0, 2, 0)
+color = Color(0, 0, 0, 1)
+alpha_curve = SubResource("CurveTexture_x8ei5")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dytwb"]
+transparency = 1
+vertex_color_use_as_albedo = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_qddfv"]
+material = SubResource("StandardMaterial3D_dytwb")
+radius = 0.1
+height = 0.5
 
 [node name="hub" type="StaticBody3D"]
 transform = Transform3D(0.75, 0, 0, 0, 0.75, 0, 0, 0, 0.75, 0, 0, 0)
@@ -33,29 +52,35 @@ blue_border_scene = ExtResource("5_81c1m")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.92518, 0)
 shape = SubResource("CylinderShape3D_a6hrk")
 
-[node name="hub_blue_lvl1" parent="." instance=ExtResource("4_jyrmp")]
-visible = false
-
-[node name="hub_blue_lvl2" parent="." instance=ExtResource("5_wey62")]
-visible = false
-
 [node name="hub_blue_lvl3" parent="." instance=ExtResource("6_xc8db")]
-visible = false
-
-[node name="hub_green_lvl1" parent="." instance=ExtResource("7_tvoou")]
-visible = false
-
-[node name="hub_green_lvl2" parent="." instance=ExtResource("8_olgkt")]
 visible = false
 
 [node name="hub_green_lvl3" parent="." instance=ExtResource("9_lycr0")]
 visible = false
 
-[node name="hub_red_lvl1" parent="." instance=ExtResource("10_wv5ii")]
-visible = false
-
-[node name="hub_red_lvl2" parent="." instance=ExtResource("11_vrqs7")]
-visible = false
-
 [node name="hub_red_lvl3" parent="." instance=ExtResource("12_t1wcr")]
 visible = false
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.742212, 5.84427, -1.50222)
+amount = 100
+local_coords = true
+trail_lifetime = 3.74
+process_material = SubResource("ParticleProcessMaterial_jtlqy")
+draw_pass_1 = SubResource("SphereMesh_qddfv")
+
+[node name="GPUParticles3D2" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.697204, 5.84427, -1.50222)
+amount = 100
+local_coords = true
+trail_lifetime = 3.74
+process_material = SubResource("ParticleProcessMaterial_jtlqy")
+draw_pass_1 = SubResource("SphereMesh_qddfv")
+
+[node name="GPUParticles3D3" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.33379, 5.84427, -1.50222)
+amount = 100
+local_coords = true
+trail_lifetime = 3.74
+process_material = SubResource("ParticleProcessMaterial_jtlqy")
+draw_pass_1 = SubResource("SphereMesh_qddfv")

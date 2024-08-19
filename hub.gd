@@ -12,14 +12,9 @@ class_name ResourceHub
 
 @export var type: ResourcePoint.Type = ResourcePoint.Type.Red
 
-@onready var hub_blue_lvl_1 = $hub_blue_lvl1
-@onready var hub_blue_lvl_2 = $hub_blue_lvl2
+
 @onready var hub_blue_lvl_3 = $hub_blue_lvl3
-@onready var hub_green_lvl_1 = $hub_green_lvl1
-@onready var hub_green_lvl_2 = $hub_green_lvl2
 @onready var hub_green_lvl_3 = $hub_green_lvl3
-@onready var hub_red_lvl_1 = $hub_red_lvl1
-@onready var hub_red_lvl_2 = $hub_red_lvl2
 @onready var hub_red_lvl_3 = $hub_red_lvl3
 
 class ResourceInfo:
@@ -32,9 +27,9 @@ var level: int = 1
 
 func _ready():
     match self.type:
-        ResourcePoint.Type.Red: self.hub_red_lvl_1.visible = true
-        ResourcePoint.Type.Green: self.hub_green_lvl_1.visible = true
-        ResourcePoint.Type.Blue: self.hub_blue_lvl_1.visible = true
+        ResourcePoint.Type.Red: self.hub_red_lvl_3.visible = true
+        ResourcePoint.Type.Green: self.hub_green_lvl_3.visible = true
+        ResourcePoint.Type.Blue: self.hub_blue_lvl_3.visible = true
     
     self.create_border()
     self.update_workers()
