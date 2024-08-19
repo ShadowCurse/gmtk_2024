@@ -82,21 +82,36 @@ func _process(delta):
         var local_position = self.to_local(self.selection_point_position)
         var local_rotation = Quaternion(Vector3.UP, local_position.normalized()).get_euler()
         
-        if Input.is_action_just_pressed("place_resource"):
-            var resource_point: ResourcePoint = self.resource_point_scene.instantiate()
-            resource_point.position = local_position
-            resource_point.rotation = local_rotation
-            self.add_child(resource_point)
-            self.resource_points.append(resource_point)
-
-        if Input.is_action_just_pressed("place_hub"):
+        if Input.is_action_just_pressed("place_hub_red"):
             var resource_hub: ResourceHub = self.resource_hub_scene.instantiate()
+            resource_hub.type = ResourcePoint.Type.Red
             resource_hub.planet = self
             resource_hub.position = local_position
             resource_hub.rotation = local_rotation
             resource_hub.select_resource_points(self.resource_points)
             self.add_child(resource_hub)
             self.resource_hubs.append(resource_hub)
+
+        if Input.is_action_just_pressed("place_hub_green"):
+            var resource_hub: ResourceHub = self.resource_hub_scene.instantiate()
+            resource_hub.type = ResourcePoint.Type.Green
+            resource_hub.planet = self
+            resource_hub.position = local_position
+            resource_hub.rotation = local_rotation
+            resource_hub.select_resource_points(self.resource_points)
+            self.add_child(resource_hub)
+            self.resource_hubs.append(resource_hub)
+
+        if Input.is_action_just_pressed("place_hub_blue"):
+            var resource_hub: ResourceHub = self.resource_hub_scene.instantiate()
+            resource_hub.type = ResourcePoint.Type.Blue
+            resource_hub.planet = self
+            resource_hub.position = local_position
+            resource_hub.rotation = local_rotation
+            resource_hub.select_resource_points(self.resource_points)
+            self.add_child(resource_hub)
+            self.resource_hubs.append(resource_hub)
+
 
 func _unhandled_input(event)-> void:
     if Input.is_mouse_button_pressed(MOUSE_BUTTON_WHEEL_UP):
