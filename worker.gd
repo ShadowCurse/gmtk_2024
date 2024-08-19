@@ -13,6 +13,7 @@ var resource_hub: ResourceHub
 var resource_point: ResourcePoint
 var item: Node3D
 var target: Vector3
+var has_item: bool = false
 
 func _ready():
     self.target = self.resource_point.position
@@ -20,16 +21,19 @@ func _ready():
         ResourcePoint.Type.Red: 
             var r = self.red_resource.instantiate()
             r.position = self.marker_3d.position
+            r.visible = false
             self.add_child(r)
             self.item = r
         ResourcePoint.Type.Green: 
             var r = self.green_resource.instantiate()
             r.position = self.marker_3d.position
+            r.visible = false
             self.add_child(r)
             self.item = r
         ResourcePoint.Type.Blue: 
             var r = self.blue_resource.instantiate()
             r.position = self.marker_3d.position
+            r.visible = false
             self.add_child(r)
             self.item = r
 
@@ -66,14 +70,38 @@ func _process(delta):
         var collision = self.get_slide_collision(i)
         var collider = collision.get_collider()
         if collider is ResourceHub:
-            self.item_visible(false)
-            self.target = self.resource_point.position
+            if self.has_item:
+                collider.add_resource(self.type)
+                self.has_item = false
+                self.item_visible(false)
+                self.target = self.resource_point.position
         elif collider is Worker:
+            self.has_item = false
             self.velocity += self.position.normalized() * 5.0
             self.item_visible(false)
             self.target = self.resource_point.position
+            match self.type:
+                ResourcePoint.Type.Red: 
+                    var r: WorkerResource = self.red_resource.instantiate()
+                    r.position = self.to_global(self.item.position)
+                    r.linear_velocity = self.velocity
+                    r.start = true
+                    get_tree().root.add_child(r)
+                ResourcePoint.Type.Green: 
+                    var r: WorkerResource = self.green_resource.instantiate()
+                    r.position = self.to_global(self.item.position)
+                    r.linear_velocity = self.velocity
+                    r.start = true
+                    get_tree().root.add_child(r)
+                ResourcePoint.Type.Blue: 
+                    var r: WorkerResource = self.blue_resource.instantiate()
+                    r.position = self.to_global(self.item.position)
+                    r.linear_velocity = self.velocity
+                    r.start = true
+                    get_tree().root.add_child(r)
 
 func go_to_hub():
+    self.has_item = true
     self.item_visible(true)
     self.target = self.resource_hub.position
 

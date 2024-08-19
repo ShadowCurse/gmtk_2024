@@ -1,9 +1,23 @@
-[gd_scene load_steps=2 format=3 uid="uid://dviy5m8m33yef"]
+[gd_scene load_steps=4 format=3 uid="uid://dviy5m8m33yef"]
 
+[ext_resource type="Script" path="res://worker_resource.gd" id="1_51806"]
 [ext_resource type="PackedScene" uid="uid://b2p4m6i31yupo" path="res://assets/rock_red.glb" id="1_kwjrs"]
 
-[node name="worker_resource_red" type="Node3D"]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+[sub_resource type="BoxShape3D" id="BoxShape3D_v4c4u"]
+size = Vector3(0.909637, 0.874054, 0.655731)
+
+[node name="worker_resource_red" type="RigidBody3D"]
+collision_layer = 8
+script = ExtResource("1_51806")
 
 [node name="rock_red" parent="." instance=ExtResource("1_kwjrs")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 5.15877, -1.69796, -4.37311)
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 1.99835, -0.757384, -1.6407)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0651504, 0.117646, 0.0394766)
+shape = SubResource("BoxShape3D_v4c4u")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
