@@ -1,19 +1,42 @@
-[gd_scene load_steps=4 format=3 uid="uid://dwp352sd18676"]
+[gd_scene load_steps=9 format=3 uid="uid://dwp352sd18676"]
 
 [ext_resource type="Script" path="res://sun.gd" id="1_jlxi4"]
+[ext_resource type="Shader" path="res://sun.gdshader" id="2_nf0dw"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_dmj8h"]
-radius = 150.0
-height = 300.0
+radius = 50.0
+height = 100.0
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oh203"]
-albedo_color = Color(0.70469, 0.240635, 0, 1)
-emission_enabled = true
-emission = Color(0.705882, 0.239216, 0, 1)
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_1evfi"]
+noise_type = 3
+frequency = 0.0067
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5rk6n"]
+noise = SubResource("FastNoiseLite_1evfi")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_8hiaj"]
+noise_type = 2
+frequency = 0.2399
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_msq2n"]
+noise = SubResource("FastNoiseLite_8hiaj")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qbyrg"]
+render_priority = 0
+shader = ExtResource("2_nf0dw")
+shader_parameter/Glow_Power = 5.683
+shader_parameter/Lightness_Difference = 2.436
+shader_parameter/Sun_Color = Color(1, 0.494553, 0.209224, 1)
+shader_parameter/waveSpeed = 0.1
+shader_parameter/fresnel = 1.524
+shader_parameter/scale = 0.01
+shader_parameter/blendSharpness = 0.0
+shader_parameter/voronoi_noise = SubResource("NoiseTexture2D_msq2n")
+shader_parameter/emission_noise = SubResource("NoiseTexture2D_5rk6n")
 
 [node name="sun" type="Node3D"]
 script = ExtResource("1_jlxi4")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_dmj8h")
-surface_material_override/0 = SubResource("StandardMaterial3D_oh203")
+surface_material_override/0 = SubResource("ShaderMaterial_qbyrg")
