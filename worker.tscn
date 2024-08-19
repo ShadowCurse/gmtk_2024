@@ -86,3 +86,17 @@ draw_pass_1 = SubResource("SphereMesh_t58p4")
 
 [node name="Marker3D" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.288, -1.045)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.0328586, 0.99946, 0, -0.99946, 0.0328586, 0, 0.99, 0.75)
+spot_range = 4.352
+spot_attenuation = 9.18959
+spot_angle = 52.0
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.47717, -0.487227)
+light_color = Color(1, 0.819606, 0.160165, 1)
+spot_range = 11.487
+spot_attenuation = 0.870551
+spot_angle = 39.0
+spot_angle_attenuation = 0.31864
