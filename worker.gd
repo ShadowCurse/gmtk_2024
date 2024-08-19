@@ -1,23 +1,37 @@
 extends CharacterBody3D
 class_name Worker
 
-@onready var item = $item
+@onready var marker_3d = $Marker3D
 
+@export var red_resource: PackedScene
+@export var green_resource: PackedScene
+@export var blue_resource: PackedScene
 @export var type: ResourcePoint.Type = ResourcePoint.Type.Red
 @export var speed: float = 2.0
 
 var resource_hub: ResourceHub
 var resource_point: ResourcePoint
-
+var item: Node3D
 var target: Vector3
 
 func _ready():
     self.target = self.resource_point.position
-    self.item.visible = false
     match self.type:
-        ResourcePoint.Type.Red: self.item.get_surface_override_material(0).albedo_color = Color.RED
-        ResourcePoint.Type.Green: self.item.get_surface_override_material(0).albedo_color = Color.GREEN
-        ResourcePoint.Type.Blue: self.item.get_surface_override_material(0).albedo_color = Color.BLUE
+        ResourcePoint.Type.Red: 
+            var r = self.red_resource.instantiate()
+            r.position = self.marker_3d.position
+            self.add_child(r)
+            self.item = r
+        ResourcePoint.Type.Green: 
+            var r = self.green_resource.instantiate()
+            r.position = self.marker_3d.position
+            self.add_child(r)
+            self.item = r
+        ResourcePoint.Type.Blue: 
+            var r = self.blue_resource.instantiate()
+            r.position = self.marker_3d.position
+            self.add_child(r)
+            self.item = r
 
 func _process(delta):
     if Input.is_action_pressed("ui_up"):
@@ -52,13 +66,17 @@ func _process(delta):
         var collision = self.get_slide_collision(i)
         var collider = collision.get_collider()
         if collider is ResourceHub:
-            self.item.visible = false
+            self.item_visible(false)
             self.target = self.resource_point.position
         elif collider is Worker:
             self.velocity += self.position.normalized() * 5.0
-            self.item.visible = false
+            self.item_visible(false)
             self.target = self.resource_point.position
 
 func go_to_hub():
-    self.item.visible = true
+    self.item_visible(true)
     self.target = self.resource_hub.position
+
+func item_visible(v: bool):
+    if self.item:
+        item.visible = v
