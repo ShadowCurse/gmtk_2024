@@ -1,9 +1,22 @@
-[gd_scene load_steps=5 format=3 uid="uid://i1kc0kubuujw"]
+[gd_scene load_steps=10 format=3 uid="uid://i1kc0kubuujw"]
 
 [ext_resource type="Script" path="res://solar_system.gd" id="1_0j8ob"]
 [ext_resource type="PackedScene" uid="uid://dwp352sd18676" path="res://sun.tscn" id="1_2v0qv"]
 [ext_resource type="PackedScene" uid="uid://sopr4q2hdxso" path="res://planet.tscn" id="2_a8n8s"]
 [ext_resource type="PackedScene" uid="uid://caex2v75b82lu" path="res://ui.tscn" id="4_473mp"]
+[ext_resource type="Texture2D" uid="uid://d2gwdtive6gk1" path="res://skybox-4k-zc.jpg" id="5_0y5ur"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_nabxd"]
+panorama = ExtResource("5_0y5ur")
+
+[sub_resource type="Sky" id="Sky_fbqq8"]
+sky_material = SubResource("PanoramaSkyMaterial_nabxd")
+
+[sub_resource type="Environment" id="Environment_evmge"]
+background_mode = 2
+sky = SubResource("Sky_fbqq8")
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_f34px"]
 
 [node name="solar_system" type="Node3D"]
 script = ExtResource("1_0j8ob")
@@ -11,9 +24,20 @@ script = ExtResource("1_0j8ob")
 [node name="ui" parent="." instance=ExtResource("4_473mp")]
 
 [node name="sun" parent="." instance=ExtResource("1_2v0qv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2000, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3000, 0, 0)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="sun"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2000, 0, 0)
+light_color = Color(0.793395, 0.733429, 0.639787, 1)
+light_volumetric_fog_energy = 2.931
+shadow_bias = 9.813
+shadow_normal_bias = 9.414
+shadow_transmittance_bias = 6.303
+shadow_opacity = 0.0
+shadow_blur = 0.0
 
 [node name="planet" parent="." instance=ExtResource("2_a8n8s")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_evmge")
+camera_attributes = SubResource("CameraAttributesPractical_f34px")
