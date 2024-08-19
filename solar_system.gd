@@ -2,7 +2,6 @@ extends Node3D
 
 @onready var planet = $planet
 @onready var sun = $sun
-@onready var directional_light_3d = $DirectionalLight3D
 
 var planet_distance: float = 1000.0
 var planet_rotation: float = PI / 2.0
