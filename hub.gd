@@ -3,7 +3,9 @@ class_name ResourceHub
 
 @export var planet: Node3D
 @export var worker_scene: PackedScene
-@export var border_element_scene: PackedScene
+@export var red_border_scene: PackedScene
+@export var green_border_scene: PackedScene
+@export var blue_border_scene: PackedScene
 @export var border_angle: float = PI / 16.0
 @export var border_elements: int = 32
 @export var spawn_offset: float = 3.0
@@ -43,24 +45,23 @@ func _ready():
 func _process(delta):
     pass
 
-func type_to_color(t: ResourcePoint.Type) -> Color:
-    match t:
-        ResourcePoint.Type.Red: return Color.RED
-        ResourcePoint.Type.Green: return  Color.GREEN
-        ResourcePoint.Type.Blue: return  Color.BLUE
-    return Color.WHITE
+func type_to_border() -> PackedScene:
+    match self.type:
+        ResourcePoint.Type.Red: return self.red_border_scene
+        ResourcePoint.Type.Green: return self.green_border_scene
+        ResourcePoint.Type.Blue: return self.blue_border_scene
+    return self.red_border_scene
 
 func create_border():
     var to_self = self.position.normalized()
     var right = Vector3.UP.cross(to_self).normalized()
     var first_border_element_position = self.position.rotated(right, self.border_angle)
-    var color = self.type_to_color(self.type)
+    var scene = self.type_to_border()
     var angle = 2 * PI / self.border_elements
     for i in range(self.border_elements):
         var p = first_border_element_position.rotated(to_self, angle * i)
-        var e: ResourceHubBorderElement = self.border_element_scene.instantiate()
+        var e = scene.instantiate()
         e.position = self.to_local(p)
-        e.color = color
         self.add_child(e)
 
 func select_resource_points(points: Array[ResourcePoint]):

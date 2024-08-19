@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://da4ehu7ru7mpb"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_wcaki"]
+radius = 0.1
+height = 0.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xxd73"]
+albedo_color = Color(0.19973, 0.423217, 9.62615e-08, 1)
+emission_enabled = true
+emission = Color(0, 0.410124, 0.139992, 1)
+
+[node name="hub_green_border" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_wcaki")
+surface_material_override/0 = SubResource("StandardMaterial3D_xxd73")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+light_color = Color(0, 0.45049, 0.152413, 1)
+light_energy = 0.2
+omni_range = 1.5

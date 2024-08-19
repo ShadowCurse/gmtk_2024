@@ -1,9 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://c1c8vwy6pw21f"]
+[gd_scene load_steps=16 format=3 uid="uid://c1c8vwy6pw21f"]
 
 [ext_resource type="Script" path="res://hub.gd" id="1_5l4hg"]
 [ext_resource type="PackedScene" uid="uid://cckrf2qbeium6" path="res://worker.tscn" id="2_3bq5y"]
-[ext_resource type="PackedScene" uid="uid://dlret3kv42ew5" path="res://hub_border_element.tscn" id="2_ofqwb"]
+[ext_resource type="PackedScene" uid="uid://dlret3kv42ew5" path="res://hub_red_border.tscn" id="3_x44u2"]
 [ext_resource type="PackedScene" uid="uid://dmfovwtlwe61w" path="res://assets/hub_blue_lvl1.glb" id="4_jyrmp"]
+[ext_resource type="PackedScene" uid="uid://da4ehu7ru7mpb" path="res://hub_green_border.tscn" id="4_ow3bj"]
+[ext_resource type="PackedScene" uid="uid://55aovev8pnbn" path="res://hub_blue_border.tscn" id="5_81c1m"]
 [ext_resource type="PackedScene" uid="uid://bhsote7n2yvmv" path="res://assets/hub_blue_lvl2.glb" id="5_wey62"]
 [ext_resource type="PackedScene" uid="uid://ddw3v78y3sjbn" path="res://assets/hub_blue_lvl3.glb" id="6_xc8db"]
 [ext_resource type="PackedScene" uid="uid://j204lfd5q2gm" path="res://assets/hub_green_lvl1.glb" id="7_tvoou"]
@@ -23,7 +25,9 @@ collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_5l4hg")
 worker_scene = ExtResource("2_3bq5y")
-border_element_scene = ExtResource("2_ofqwb")
+red_border_scene = ExtResource("3_x44u2")
+green_border_scene = ExtResource("4_ow3bj")
+blue_border_scene = ExtResource("5_81c1m")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.92518, 0)
@@ -48,6 +52,7 @@ visible = false
 visible = false
 
 [node name="hub_red_lvl1" parent="." instance=ExtResource("10_wv5ii")]
+visible = false
 
 [node name="hub_red_lvl2" parent="." instance=ExtResource("11_vrqs7")]
 visible = false

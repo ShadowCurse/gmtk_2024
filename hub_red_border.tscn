@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://dlret3kv42ew5"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_2w75g"]
+radius = 0.1
+height = 0.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kydck"]
+albedo_color = Color(0.735925, 0, 0.130057, 1)
+emission_enabled = true
+emission = Color(0.614741, 0, 0.118163, 1)
+
+[node name="hub_red_border" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_2w75g")
+surface_material_override/0 = SubResource("StandardMaterial3D_kydck")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+light_color = Color(0.70474, 0, 0.0599995, 1)
+light_energy = 0.2
+omni_range = 1.5
