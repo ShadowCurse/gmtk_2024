@@ -6,7 +6,6 @@ class_name Planet
 @export var resource_point_scene: PackedScene
 @export var resource_hub_scene: PackedScene
 
-@export var axis_rotation_speed: float = 0.0
 @export var camera_speed: float = 0.001 
 @export var camera_follow_speed: float = 40.0
 @export var camera_zoom_speed: float = 5.0
@@ -58,9 +57,6 @@ func _process(delta):
     self.spawn_area_progress += delta * spawn_area_progress_speed
     if 1.0 < self.spawn_area_progress:
         self.spawn_area_progress = 1.0
-
-
-    self.rotate_y(self.axis_rotation_speed * delta)
     
     # update camera
     self.camera_phi -= self.mouse_input.x * self.camera_speed
