@@ -1,13 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://ds55ygqu05f8t"]
+[gd_scene load_steps=2 format=3 uid="uid://ds55ygqu05f8t"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_1cec2"]
-size = Vector3(0.5, 0.5, 0.5)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pvchj"]
-albedo_color = Color(7.46027e-07, 0.572517, 0.225945, 1)
+[ext_resource type="PackedScene" uid="uid://rcnpm6il5aen" path="res://assets/rock_green.glb" id="1_aoew2"]
 
 [node name="worker_resource_green" type="Node3D"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("BoxMesh_1cec2")
-surface_material_override/0 = SubResource("StandardMaterial3D_pvchj")
+[node name="rock_green" parent="." instance=ExtResource("1_aoew2")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 4.91368, -1.78799, -4.60301)
