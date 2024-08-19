@@ -1,11 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://cckrf2qbeium6"]
+[gd_scene load_steps=17 format=3 uid="uid://cckrf2qbeium6"]
 
 [ext_resource type="Script" path="res://worker.gd" id="1_18uty"]
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_6pawm"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_53g4u"]
-size = Vector3(0.5, 0.5, 1)
+[ext_resource type="PackedScene" uid="uid://cee6t8gdqdf61" path="res://assets/ork.glb" id="2_ya42p"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gp66d"]
 
@@ -15,25 +11,81 @@ size = Vector3(0.5, 0.5, 0.5)
 [sub_resource type="ORMMaterial3D" id="ORMMaterial3D_uk38c"]
 albedo_color = Color(0.343048, 0.31453, 0.266026, 1)
 
+[sub_resource type="Gradient" id="Gradient_ejuf3"]
+offsets = PackedFloat32Array(0, 0.992308)
+colors = PackedColorArray(0.98276, 0.848205, 0.145573, 1, 0.835268, 0.145451, 0.0309191, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_hhx8y"]
+gradient = SubResource("Gradient_ejuf3")
+
+[sub_resource type="Gradient" id="Gradient_j1n6r"]
+colors = PackedColorArray(0.325445, 0.325439, 0.325441, 1, 0.835294, 0.835294, 0.0980392, 0.0156863)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_a1i48"]
+gradient = SubResource("Gradient_j1n6r")
+
+[sub_resource type="Curve" id="Curve_bn2e1"]
+_data = [Vector2(0.00694445, 1), 0.0, 0.0, 0, 0, Vector2(0.989583, 0.505634), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_xrxcy"]
+curve = SubResource("Curve_bn2e1")
+
+[sub_resource type="Curve" id="Curve_flifd"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.989583, 0.0204226), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_m5e4p"]
+curve = SubResource("Curve_flifd")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_u81c0"]
+direction = Vector3(0, -1, 0)
+spread = 30.0
+initial_velocity_max = 4.0
+scale_min = 0.5
+scale_curve = SubResource("CurveTexture_m5e4p")
+color = Color(0.886275, 0.313726, 0, 0.219608)
+color_ramp = SubResource("GradientTexture1D_a1i48")
+color_initial_ramp = SubResource("GradientTexture1D_hhx8y")
+emission_curve = SubResource("CurveTexture_xrxcy")
+collision_mode = 1
+collision_friction = 0.0
+collision_bounce = 0.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_snp0b"]
+transparency = 1
+vertex_color_use_as_albedo = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_t58p4"]
+material = SubResource("StandardMaterial3D_snp0b")
+radius = 0.1
+height = 0.2
+radial_segments = 8
+rings = 3
+
 [node name="worker" type="CharacterBody3D"]
 collision_layer = 2
 collision_mask = 7
 script = ExtResource("1_18uty")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-mesh = SubResource("CapsuleMesh_6pawm")
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45389, -0.143986)
-mesh = SubResource("BoxMesh_53g4u")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_gp66d")
 
 [node name="item" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.35905, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.28818, -1.04539)
 visible = false
 mesh = SubResource("BoxMesh_jfykt")
 surface_material_override/0 = SubResource("ORMMaterial3D_uk38c")
+
+[node name="ork" parent="." instance=ExtResource("2_ya42p")]
+transform = Transform3D(-0.5, 0, 4.37114e-08, 0, 0.5, 0, -4.37114e-08, 0, -0.5, 0, 0.50732, 0)
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.878481, 0.701213)
+amount = 1000
+lifetime = 0.5
+visibility_aabb = AABB(-1.46606, -1.41261, -1.55442, 2.93213, 2.82522, 3.10883)
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_u81c0")
+draw_pass_1 = SubResource("SphereMesh_t58p4")

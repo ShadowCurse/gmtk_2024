@@ -14,6 +14,10 @@ var target: Vector3
 func _ready():
     self.target = self.resource_point.position
     self.item.visible = false
+    match self.type:
+        ResourcePoint.Type.Red: self.item.get_surface_override_material(0).albedo_color = Color.RED
+        ResourcePoint.Type.Green: self.item.get_surface_override_material(0).albedo_color = Color.GREEN
+        ResourcePoint.Type.Blue: self.item.get_surface_override_material(0).albedo_color = Color.BLUE
 
 func _process(delta):
     if Input.is_action_pressed("ui_up"):
