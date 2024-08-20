@@ -84,3 +84,9 @@ local_coords = true
 trail_lifetime = 3.74
 process_material = SubResource("ParticleProcessMaterial_jtlqy")
 draw_pass_1 = SubResource("SphereMesh_qddfv")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 21.3333, 0)
+spot_range = 100.0
+spot_attenuation = 0.517633
+spot_angle = 51.0
